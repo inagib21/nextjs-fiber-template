@@ -4,7 +4,7 @@
   "framework": "nextjs",
   "functions": {
     "api/*.go": {
-      "runtime": "go1.24"
+      "runtime": "vercel-go@1.0.0"
     }
   }
 } 

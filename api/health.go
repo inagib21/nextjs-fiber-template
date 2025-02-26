@@ -9,7 +9,8 @@ type Response struct {
 	Message string `json:"message"`
 }
 
-func Health(w http.ResponseWriter, r *http.Request) {
+// Handler - handles the serverless function request
+func Handler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
