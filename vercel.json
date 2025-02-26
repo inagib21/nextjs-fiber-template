@@ -4,7 +4,22 @@
   "framework": "nextjs",
   "functions": {
     "api/*.go": {
-      "runtime": "vercel-go@1.0.0"
+      "runtime": "go@1.0.0"
     }
-  }
+  },
+  "build": {
+    "env": {
+      "GO_BUILD_FLAGS": "-ldflags '-s -w'"
+    }
+  },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+      ]
+    }
+  ]
 } 

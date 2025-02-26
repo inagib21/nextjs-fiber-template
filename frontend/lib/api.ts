@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8080');
+const API_BASE_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8080';
 
 export class ApiError extends Error {
   constructor(public status: number, message: string) {
@@ -17,7 +17,7 @@ async function handleResponse<T>(response: Response): Promise<T> {
 
 export const api = {
   async healthCheck() {
-    const response = await fetch(`${API_BASE_URL}/api/health`);
+    const response = await fetch('/api/health');
     return handleResponse<{ message: string }>(response);
   },
   
