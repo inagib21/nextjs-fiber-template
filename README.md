@@ -25,6 +25,18 @@ A modern full-stack application template using [Next.js](https://nextjs.org) and
 - Make
 
 ## Quick Start
+## Direct Clone
+```bash
+# Clone the repository
+git clone https://github.com/inagib21/nextjs-fiber-template.git
+cd nextjs-fiber-template
+
+# Remove the existing git history and start fresh
+rm -rf .git
+git init
+git add .
+git commit -m "Initial commit"
+```
 
 The easiest way to run both frontend and backend is using the Makefile:
 
@@ -116,4 +128,40 @@ The development servers will automatically reload when you make changes:
 2. Create your feature branch
 3. Commit your changes
 4. Push to the branch
-5. Create a new Pull Request 
+5. Create a new Pull Request
+
+
+### Deployment on Vercel
+This template is optimized for deployment on Vercel:
+
+1. Push your code to GitHub
+2. Go to [Vercel](https://vercel.com) and sign up/login
+3. Click "New Project" and import your repository
+4. Keep the default settings:
+   - Framework Preset: Next.js
+   - Root Directory: ./
+   - Build Command: `cd frontend && pnpm install && pnpm build`
+   - Output Directory: frontend/.next
+5. Click "Deploy"
+
+The template includes proper configuration in `vercel.json` for both the Next.js frontend and Go serverless functions.
+
+### Post-Deployment Setup
+
+#### Environment Variables
+The template uses environment variables for configuration. Set these in your Vercel project settings:
+
+Development:
+```env
+NODE_ENV=development
+```
+
+Production:
+```env
+NODE_ENV=production
+```
+
+#### Health Check
+After deployment, verify your setup by visiting:
+- Frontend: `https://your-project.vercel.app`
+- API Health Check: `https://your-project.vercel.app/api/health` 
