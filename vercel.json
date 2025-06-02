@@ -2,11 +2,6 @@
   "buildCommand": "cd frontend && pnpm install && pnpm build",
   "outputDirectory": "frontend/.next",
   "framework": "nextjs",
-  "functions": {
-    "api/*.go": {
-      "runtime": "go@1.0.0"
-    }
-  },
   "build": {
     "env": {
       "GO_BUILD_FLAGS": "-ldflags '-s -w'"
