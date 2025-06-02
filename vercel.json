@@ -1,7 +1,8 @@
 {
-  "buildCommand": "cd frontend && pnpm install && pnpm build",
+  "builds": [
+    { "src": "frontend/package.json", "use": "@vercel/next" }
+  ],
   "outputDirectory": "frontend/.next",
-  "framework": "nextjs",
   "build": {
     "env": {
       "GO_BUILD_FLAGS": "-ldflags '-s -w'"
