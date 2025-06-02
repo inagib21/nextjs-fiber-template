@@ -2,7 +2,6 @@
   "builds": [
     { "src": "frontend/package.json", "use": "@vercel/next" }
   ],
-  "outputDirectory": "frontend/.next",
   "build": {
     "env": {
       "GO_BUILD_FLAGS": "-ldflags '-s -w'"
