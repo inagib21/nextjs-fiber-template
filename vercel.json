@@ -1,8 +1,7 @@
 {
   "version": 2,
   "builds": [
-    { "src": "frontend/package.json", "use": "@vercel/next" },
-    { "src": "api/**/*.go", "use": "@vercel/go" }
+    { "src": "frontend/package.json", "use": "@vercel/next" }
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1" }
