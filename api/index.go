@@ -7,31 +7,36 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/adaptor"
 )
 
-// Handler is the public function Vercel will call.
+// Handler is the main entry point of the application. Think of it like the main() method
 func Handler(w http.ResponseWriter, r *http.Request) {
-	r.RequestURI = r.URL.String() // Needed for Fiber to correctly route
-	app().ServeHTTP(w, r)
+	// This is needed to set the proper request path in `*fiber.Ctx`
+	r.RequestURI = r.URL.String()
+
+	handler().ServeHTTP(w, r)
 }
 
-// app sets up and returns the Fiber application.
-func app() http.HandlerFunc {
-	fiberApp := fiber.New()
+// building the fiber application
+func handler() http.HandlerFunc {
+	app := fiber.New()
 
-	fiberApp.Get("/", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{
-			"message": "Hello from Fiber root on Vercel!",
-			"uri":     c.Request().URI().String(),
-			"path":    c.Path(),
+	app.Get("/v1", func(ctx *fiber.Ctx) error {
+		return ctx.JSON(fiber.Map{
+			"version": "v1",
 		})
 	})
 
-	fiberApp.Get("/health", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{"status": "healthy", "source": "Fiber"})
+	app.Get("/v2", func(ctx *fiber.Ctx) error {
+		return ctx.JSON(fiber.Map{
+			"version": "v2",
+		})
 	})
 
-	fiberApp.Get("/v1/test", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{"version": "v1", "data": "Test data for v1"})
+	app.Get("/", func(ctx *fiber.Ctx) error {
+		return ctx.JSON(fiber.Map{
+			"uri":  ctx.Request().URI().String(),
+			"path": ctx.Path(),
+		})
 	})
 
-	return adaptor.FiberApp(fiberApp)
+	return adaptor.FiberApp(app)
 } 
