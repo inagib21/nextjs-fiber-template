@@ -5,17 +5,6 @@ import { Button } from "@/components/ui/button";
 // import { api } from "@/lib/api"; // api import no longer needed if no API calls from this page
 
 export default function Home() {
-  // const testBackendConnection = async () => { // Removed
-  //   try { // Removed
-  //     const response = await api.healthCheck(); // Removed
-  //     console.log('Backend response:', response); // Removed
-  //     alert(response.message); // Removed
-  //   } catch (error) { // Removed
-  //     console.error('Backend connection error:', error); // Removed
-  //     alert('Error connecting to backend'); // Removed
-  //   } // Removed
-  // }; // Removed
-
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center max-w-4xl w-full">
@@ -152,13 +141,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        {/* <Button // Removed
-          onClick={testBackendConnection} // Removed
-          className="sm:h-12 sm:text-base mt-4" // Removed
-        >
-          Test Backend Connection // Removed
-        </Button> */} // Removed
       </main>
 
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
