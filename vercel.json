@@ -4,6 +4,11 @@
     { "src": "frontend/package.json", "use": "@vercel/next" },
     { "src": "api/**/*.go", "use": "@vercel/go" }
   ],
+  "build": {
+    "env": {
+      "GO_BUILD_FLAGS": "-ldflags '-s -w'"
+    }
+  },
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1" }
   ]
