@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Copy } from "lucide-react"; // Icon for copy button
+import { ThemeToggle } from "@/components/theme-toggle"; // Added import
 // import { api } from "@/lib/api"; // api import no longer needed if no API calls from this page
 
 export default function Home() {
@@ -20,7 +21,12 @@ export default function Home() {
   };
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="grid grid-rows-[auto_1fr_auto] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      {/* Header/Toggle section - Adjust layout as needed */}
+      <header className="w-full max-w-4xl flex justify-end py-4">
+        <ThemeToggle />
+      </header>
+
       <main className="flex flex-col gap-8 row-start-2 items-center max-w-4xl w-full">
         <div className="flex flex-col items-center gap-6 w-full mb-4">
           <div className="flex items-center gap-8 justify-center">
