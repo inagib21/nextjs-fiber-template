@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Copy } from "lucide-react"; // Icon for copy button
+import { Copy, Github } from "lucide-react"; // Added Github icon
 import { ThemeToggle } from "@/components/theme-toggle"; // Added import
 // import { api } from "@/lib/api"; // api import no longer needed if no API calls from this page
 
 export default function Home() {
   const cloneCommand = "git clone https://github.com/inagib21/nextjs-fiber-template.git";
+  const repoUrl = "https://github.com/inagib21/nextjs-fiber-template";
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(cloneCommand)
@@ -61,6 +62,15 @@ export default function Home() {
               <Copy className="h-4 w-4 text-gray-600 dark:text-gray-400" />
             </Button>
           </div>
+        </div>
+
+        {/* View Source Code Button */}
+        <div className="mt-6 w-full max-w-xs">
+          <Button asChild className="w-full sm:h-12">
+            <a href={repoUrl} target="_blank" rel="noopener noreferrer">
+              <Github className="mr-2 h-4 w-4" /> View Source Code
+            </a>
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full mt-8">
