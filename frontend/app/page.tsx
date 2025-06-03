@@ -2,9 +2,23 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { Copy } from "lucide-react"; // Icon for copy button
 // import { api } from "@/lib/api"; // api import no longer needed if no API calls from this page
 
 export default function Home() {
+  const cloneCommand = "git clone https://github.com/inagib21/nextjs-fiber-template.git";
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(cloneCommand)
+      .then(() => {
+        alert("Clone command copied to clipboard!");
+      })
+      .catch(err => {
+        console.error('Failed to copy text: ', err);
+        alert("Failed to copy command. See console for details.");
+      });
+  };
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center max-w-4xl w-full">
@@ -30,7 +44,20 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full">
+        {/* Git Clone Command Section */}
+        <div className="w-full max-w-2xl p-4 border rounded-lg bg-gray-50 dark:bg-gray-800 shadow-md">
+          <h2 className="text-lg font-semibold text-center mb-3 text-gray-800 dark:text-gray-200">Get Started Quickly</h2>
+          <div className="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-700 rounded-md">
+            <code className="text-sm text-gray-700 dark:text-gray-300 overflow-x-auto">
+              {cloneCommand}
+            </code>
+            <Button variant="ghost" size="icon" onClick={copyToClipboard} aria-label="Copy clone command">
+              <Copy className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+            </Button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full mt-8">
           {/* Frontend Section */}
           <div className="space-y-6 flex flex-col items-center text-center">
             <h2 className="text-xl font-bold">Frontend (Next.js)</h2>
