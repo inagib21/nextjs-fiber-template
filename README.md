@@ -21,7 +21,7 @@ A modern full-stack application template using [Next.js](https://nextjs.org) and
 
 - [Node.js](https://nodejs.org) (18.x or later)
 - [pnpm](https://pnpm.io) (8.x or later)
-- [Go](https://go.dev) (1.24 or later)
+- [Go](https://go.dev) (1.22 or later)
 - Make
 
 ## Quick Start
@@ -38,8 +38,17 @@ git add .
 git commit -m "Initial commit"
 ```
 
-The easiest way to run both frontend and backend is using the Makefile:
+The easiest way to run both frontend and backend for local development is using the Vercel CLI:
 
+```bash
+# Install Vercel CLI if you haven't already
+pnpm add -g vercel
+
+# Run the development server (handles both frontend and Go API)
+vercel dev
+```
+
+Alternatively, using the Makefile (which may use `vercel dev` or separate commands):
 ```bash
 # Install dependencies and run both services
 make run
@@ -48,18 +57,15 @@ make run
 make stop
 ```
 
-The frontend will be available at `http://localhost:3000`
-The backend will be available at `http://localhost:8080`
+The frontend will be available at `http://localhost:3000` (or as indicated by `vercel dev`).
+The Go API endpoints will be available under `http://localhost:3000/api/...` when using `vercel dev`, as it proxies requests.
 
 ## Manual Setup
 
-### Backend (Go Fiber)
+### Backend (Go Fiber API - for Vercel context)
+The Go application in the `api/` directory is structured as a Vercel Serverless Function. For local development that mirrors the Vercel environment, use `vercel dev` from the project root.
 
-```bash
-cd backend
-go mod tidy
-go run main.go
-```
+If you wish to run or test Go components independently (outside the full Vercel dev environment), you would typically create a separate `main.go` for that purpose.
 
 ### Frontend (Next.js)
 
@@ -68,6 +74,7 @@ cd frontend
 pnpm install
 pnpm dev
 ```
+This will run the Next.js frontend, typically on `http://localhost:3000`. Note that API calls to `/api/...` might not work correctly unless the Go API is also being served and proxied (e.g., via `vercel dev`).
 
 ## Available Make Commands
 
@@ -81,17 +88,18 @@ pnpm dev
 
 ```
 .
-├── backend/         # Go Fiber backend
-│   ├── main.go     # Main entry point
-│   ├── go.mod      # Go modules file
-│   └── go.sum      # Go modules checksum
+├── api/             # Go Fiber API (Vercel Serverless Functions)
+│   └── index.go    # Main entry point for the API
 │
 ├── frontend/       # Next.js frontend
 │   ├── app/       # Next.js app directory
 │   ├── components/# React components
 │   └── lib/       # Utility functions and API client
 │
-└── Makefile       # Build and run commands
+├── go.mod          # Go modules file (project root)
+├── go.sum          # Go modules checksum (project root)
+├── Makefile       # Build and run commands
+└── vercel.json    # Vercel deployment configuration
 ```
 
 ## Features
@@ -107,20 +115,24 @@ pnpm dev
 ### Backend
 - High-performance Go Fiber framework
 - Built on top of FastHTTP
-- CORS configured for frontend
-- RESTful API endpoints
-- Health check endpoint
+- RESTful API structure (served via Vercel Serverless Functions)
+- Health check endpoint (`/api/health`) and other example API routes
 
 ## API Endpoints
 
 - `GET /api/health` - Health check endpoint
-  - Response: `{ "message": "Backend is healthy!" }`
+  - Response: `{ "status": "healthy", "message": "Go Fiber API is running!" }`
+- `GET /api/` - Root of the Go API
+  - Response: Example: `{ "uri": "/api/", "path": "/" }`
+- `GET /api/v1` - Example v1 endpoint
+  - Response: `{ "version": "v1" }`
+- `GET /api/v2` - Example v2 endpoint
+  - Response: `{ "version": "v2" }`
 
 ## Development
-
-The development servers will automatically reload when you make changes:
-- Frontend changes will be reflected immediately with Fast Refresh
-- Backend changes require server restart (use `make run-backend` to restart)
+When using `vercel dev`, changes to both frontend and backend code should trigger reloads.
+- Frontend changes (Next.js): Fast Refresh.
+- Backend changes (Go in `api/`): `vercel dev` should detect changes and rebuild the Go function.
 
 ## Contributing
 
@@ -132,17 +144,16 @@ The development servers will automatically reload when you make changes:
 
 
 ### Deployment on Vercel
-This template is optimized for deployment on Vercel:
+This template is optimized for deployment on Vercel. The `vercel.json` file in the project root configures the builds and routing.
 
-1. Push your code to GitHub
-2. Go to [Vercel](https://vercel.com) and sign up/login
-3. Click "New Project" and import your repository
-4. Keep the default settings:
-   - Framework Preset: Next.js
-   - Root Directory: ./
-   - Build Command: `cd frontend && pnpm install && pnpm build`
-   - Output Directory: frontend/.next
-5. Click "Deploy"
+1. Push your code to a Git repository (e.g., GitHub, GitLab, Bitbucket).
+2. Go to [Vercel](https://vercel.com) and sign up/login.
+3. Click "New Project" and import your repository.
+4. Vercel should automatically detect the Next.js frontend and use the settings from `vercel.json` to build the Go API.
+   - Framework Preset: Should be Next.js (Vercel typically autodetects this for the frontend part).
+   - Root Directory: Should be `./` (monorepo root).
+   The `builds` array in `vercel.json` explicitly tells Vercel how to build each part (`@vercel/next` for `frontend/package.json` and `@vercel/go` for `api/index.go`).
+5. Click "Deploy".
 
 The template includes proper configuration in `vercel.json` for both the Next.js frontend and Go serverless functions.
 
@@ -161,7 +172,10 @@ Production:
 NODE_ENV=production
 ```
 
-#### Health Check
+#### Health Check & API Tests
 After deployment, verify your setup by visiting:
 - Frontend: `https://your-project.vercel.app`
-- API Health Check: `https://your-project.vercel.app/api/health` 
+- API Health Check: `https://your-project.vercel.app/api/health`
+- Other API routes like `https://your-project.vercel.app/api/` or `https://your-project.vercel.app/api/v1`
+
+The frontend includes a "Test Backend Connection" button which calls the `/api/health` endpoint. 
