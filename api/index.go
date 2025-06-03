@@ -38,13 +38,5 @@ func handler() http.HandlerFunc {
 		})
 	})
 
-	// Adding the /health route
-	app.Get("/health", func(ctx *fiber.Ctx) error {
-		return ctx.JSON(fiber.Map{
-			"status": "healthy",
-			"message": "Go Fiber API is running!",
-		})
-	})
-
 	return adaptor.FiberApp(app)
 } 

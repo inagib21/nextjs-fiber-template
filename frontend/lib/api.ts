@@ -14,10 +14,5 @@ async function handleResponse<T>(response: Response): Promise<T> {
 }
 
 export const api = {
-  async healthCheck() {
-    const response = await fetch('/api/health');
-    return handleResponse<{ message: string }>(response);
-  },
-  
   // Add more API methods here as needed
 }; 
